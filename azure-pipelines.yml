@@ -25,8 +25,11 @@ pool:
 steps:
 - script: set
   displayName: Environment
-  
+    
 - script: |
+    dir %WIX%
+    path
+    path %WIX%\bin;%path%
     path
     which tar
     which curl
