@@ -76,3 +76,17 @@ steps:
     cd "$(builddir)\$(star-fullname)"
     dir /s
   displayName: Check the build
+  
+- publish: $(builddir)\$(star-fullname)\*.msi
+  artifact: msi
+  
+- task: GithubRelease@0 
+  displayName: 'Create GitHub Release'      
+  inputs:
+    gitHubConnection: rba
+    tagSource: manual
+    tag: $(star-year)-$(star-month)      
+    assets: $(builddir)\$(star-fullname)\*.msi
+    
+
+
