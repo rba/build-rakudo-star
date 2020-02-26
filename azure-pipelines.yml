@@ -1,0 +1,75 @@
+# Build NodeJS Express app using Azure Pipelines
+# https://docs.microsoft.com/azure/devops/pipelines/ecosystems/javascript?view=azure-devops
+
+variables:
+  star-year: 2020
+  star-month: 01
+  star-name: rakudo-star
+  star-fullname: $(star-name)-$(star-year).$(star-month)
+  star-tgz: $(star-fullname).tar.gz
+  star-src: https://rakudo.org/dl/star/$(star-tgz)
+  builddir: $(Build.SourcesDirectory)\builddir
+
+strategy:
+  matrix:
+#    linux:
+#      imageName: 'ubuntu-16.04'
+#    mac:
+#      imageName: 'macos-10.14'
+    windows:
+       imageName: 'windows-2019'
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+- script: |
+    path
+    which tar
+    which curl
+    which perl
+    which refreshenv
+    perl -v
+    perl -V
+  displayName: Check various commands
+  
+- script: |
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
+    which nmake
+    echo %VSINSTALLDIR%
+  displayName: Check VC2019 nmake
+  
+- script: choco install activeperl
+  displayName: Install ActivePerl
+
+- script: |
+    path
+    path C:\Perl64\bin;%path%
+    path
+    which perl
+    perl -v
+    perl -V
+  displayName: Check ActivePerl
+
+- script: |
+    echo "$(builddir)"
+    mkdir "$(builddir)"
+    cd "$(builddir)"
+    curl -O "$(star-src)"
+    tar -xvzf "$(star-tgz)"
+  displayName: Get Rakudo Star and untar
+
+- script: |    
+    cd "$(builddir)\$(star-fullname)"
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+    path C:\Perl64\bin;%path%
+    path
+    perl Configure.pl --prefix=C:\rakudo --gen-moar
+    nmake install
+    nmake msi
+  displayName: Build and install
+  
+- script: |   
+    cd "$(builddir)\$(star-fullname)"
+    dir /s
+  displayName: Check the build
