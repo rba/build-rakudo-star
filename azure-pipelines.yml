@@ -1,4 +1,5 @@
 # Build Rakudo Star using Azure Pipelines
+# On windows 2019 with Visual Studio 2019
 
 variables:
   star-year: 2020
@@ -22,18 +23,20 @@ pool:
   vmImage: $(imageName)
 
 steps:
+- script: set
+  displayName: Environment
+  
 - script: |
     path
     which tar
     which curl
-    which perl
-    which refreshenv
-    perl -v
-    perl -V
+    which heat
+    which candle
+    which light
   displayName: Check various commands
   
 - script: |
-    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
     which nmake
     echo %VSINSTALLDIR%
   displayName: Check VC2019 nmake
