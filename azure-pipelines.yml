@@ -85,8 +85,12 @@ steps:
   inputs:
     gitHubConnection: github.com_rba
     tagSource: manual
-    tag: $(star-year)-$(star-month)      
+    tag: $(star-year).$(star-month)      
     assets: $(builddir)\$(star-fullname)\$(star-fullname).msi
+    assetUploadMode: replace
+    isDraft: true
+    title: Rakudo Star $(star-year).$(star-month)
+    addChangeLog: false
     
 
 
