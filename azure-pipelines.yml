@@ -83,7 +83,7 @@ steps:
 - task: GithubRelease@0 
   displayName: 'Create GitHub Release'      
   inputs:
-    gitHubConnection: rba-repo-full-control
+    gitHubConnection: github.com_rba
     tagSource: manual
     tag: $(star-year)-$(star-month)      
     assets: $(builddir)\$(star-fullname)\$(star-fullname).msi
