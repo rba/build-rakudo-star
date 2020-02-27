@@ -77,7 +77,7 @@ steps:
     dir /s
   displayName: Check the build
   
-- publish: "$(builddir)\$(star-fullname)\$(star-fullname).msi"
+- publish: $(builddir)\$(star-fullname)\$(star-fullname).msi
   artifact: msi
   
 - task: GithubRelease@0 
@@ -86,7 +86,7 @@ steps:
     gitHubConnection: rba-repo-full-control
     tagSource: manual
     tag: $(star-year)-$(star-month)      
-    assets: "$(builddir)\$(star-fullname)\$(star-fullname).msi"
+    assets: $(builddir)\$(star-fullname)\$(star-fullname).msi
     
 
 
